@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:5.5.2
+FROM docker.elastic.co/elasticsearch/elasticsearch:5.4.0
 
 COPY "target/releases/*.zip" "/opt/plugin.zip"
 RUN ["bin/elasticsearch-plugin", "install", "file:///opt/plugin.zip"]
