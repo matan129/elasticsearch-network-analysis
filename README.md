@@ -30,7 +30,7 @@ For example, it'd split `127.0` to `127` and `0`, but it will output *nothing* f
 After installing, you may tell ES to use the analyzers listed above in mappings and queries.
 To test the analyzers, the `_analyze` endpoint can be used:
 
-    curl -XPOST http://<es_host>:9200/_analyze?pretty -d'
+    curl -XPOST http://<es_host>:9200/_analyze?pretty=true -d'
     {
         "analyzer": "network_address",
         "text": "AA:BB:CC:DD:EE:FF"
@@ -55,19 +55,14 @@ To test the analyzers, the `_analyze` endpoint can be used:
 
 To test the plugin, the `_analyze` endpoint can be used:
 
-	curl -XPOST http://localhost:9200/_analyze?pretty=1&analyzer=network_address -d '
-	computer_name = "ABC"                                                   
-	mac_address = AA:BB:CC:DD:EE:FF                                         
-	SMBInfo for 192.168.0.1:                                               
-		os = Windows Server (R) 2008 Enterprise 6002 Service Pack 2         
-		lanman = Windows Server (R) 2008 Enterprise 6.0                     
-		domain = WORKGROUP                                                  
-		server_time = Tue Apr 24 10:35:57 2012                              
-	smb_port = 445                                                          
-	'
+    curl -XPOST http://localhost:9200/_analyze?pretty=true -d '{
+        "analyzer": "network_address",
+        "text": "computer_name = \"ABC\" mac_address = AA:BB:CC:DD:EE:FF SMBInfo for 192.168.0.1: os = Windows Server (R) 2008 Enterprise 6002 Service Pack 2 lanman = Windows Server (R) 2008 Enterprise 6.0 domain = WORKGROUP server_time = Tue Apr 24 10:35:57 2012 smb_port = 445"
+    }'
 
  response:
 
+```json
 	{
 	  "tokens":[
 	  {
@@ -82,6 +77,7 @@ To test the plugin, the `_analyze` endpoint can be used:
 		...
 	  }
 	}
+```
 
 The next step is to update the mapping of your index to use the analyzer:
 
